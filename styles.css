@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+}
+.controls {
+    margin-bottom: 20px;
+}
+#pokemon-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.pokemon-card {
+    width: 150px;
+    background: white;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.5s;
+}
+.pokemon-card:hover {
+    transform: scale(1.1);
+}
+.pokemon-card img {
+    width: 80px;
+}
+.grass { background: lightgreen; }
+.fire { background: orange; }
+.water { background: lightblue; }
