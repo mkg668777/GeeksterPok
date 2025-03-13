@@ -1,31 +1,73 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     text-align: center;
-    background: #f4f4f4;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    margin: 0;
+    padding: 0;
 }
-.controls {
-    margin-bottom: 20px;
+
+/* Pokémon कार्ड स्टाइल */
+.pokemon-card {
+    width: 180px;
+    height: 250px;
+    perspective: 1000px;
+    display: inline-block;
+    margin: 15px;
+    cursor: pointer;
 }
-#pokemon-container {
+
+/* कार्ड इफ़ेक्ट */
+.card-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.pokemon-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* कार्ड के दोनों साइड */
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
-.pokemon-card {
-    width: 150px;
+
+/* कार्ड के आगे और पीछे की डिज़ाइन */
+.card-front {
     background: white;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.5s;
 }
-.pokemon-card:hover {
-    transform: scale(1.1);
+
+.card-back {
+    background: #ffcc00;
+    transform: rotateY(180deg);
 }
-.pokemon-card img {
-    width: 80px;
-}
-.grass { background: lightgreen; }
-.fire { background: orange; }
-.water { background: lightblue; }
+
+/* Type के अनुसार कार्ड का कलर */
+.grass { background: #78c850; color: white; }
+.fire { background: #f08030; color: white; }
+.water { background: #6890f0; color: white; }
+.electric { background: #f8d030; color: black; }
+.ice { background: #98d8d8; color: black; }
+.fighting { background: #c03028; color: white; }
+.poison { background: #a040a0; color: white; }
+.ground { background: #e0c068; color: black; }
+.flying { background: #a890f0; color: black; }
+.psychic { background: #f85888; color: white; }
+.bug { background: #a8b820; color: black; }
+.rock { background: #b8a038; color: white; }
+.ghost { background: #705898; color: white; }
+.dragon { background: #7038f8; color: white; }
+.dark { background: #705848; color: white; }
+.steel { background: #b8b8d0; color: black; }
+.fairy { background: #ee99ac; color: black; }

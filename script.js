@@ -1,52 +1,43 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    const pokemonContainer = document.getElementById("pokemon-container");
+const pokemonContainer = document.getElementById("pokemon-container");
 
-    async function fetchPokemon() {
-        try {
-            const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=50");
-            const data = await response.json();
-            displayPokemon(data.results);
-        } catch (error) {
-            console.error("Error fetching Pokémon:", error);
-        }
-    }
+// Pokémon API से डेटा लोड करें
+fetch("https://pokeapi.co/api/v2/pokemon?limit=10")
+    .then(response => response.json())
+    .then(data => {
+        data.results.forEach((pokemon, index) => {
+            fetch(pokemon.url)
+                .then(response => response.json())
+                .then(pokeData => {
+                    const card = document.createElement("div");
+                    card.classList.add("pokemon-card", pokeData.types[0].type.name);
 
-    async function displayPokemon(pokemonList) {
-        pokemonContainer.innerHTML = "";
-        for (const pokemon of pokemonList) {
-            const res = await fetch(pokemon.url);
-            const pokeData = await res.json();
-            createPokemonCard(pokeData);
-        }
-    }
+                    card.innerHTML = `
+                        <div class="card-inner">
+                            <!-- Front Side -->
+                            <div class="card-front">
+                                <h3>#${pokeData.id}</h3>
+                                <img src="${pokeData.sprites.front_default}" alt="${pokeData.name}">
+                                <p><strong>${pokeData.name.toUpperCase()}</strong></p>
+                                <p>${pokeData.types.map(t => t.type.name.toUpperCase()).join(', ')}</p>
+                            </div>
+                            
+                            <!-- Back Side -->
+                            <div class="card-back">
+                                <h3>Abilities</h3>
+                                <ul>
+                                    ${pokeData.abilities.map(a => `<li>${a.ability.name}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
 
-    function createPokemonCard(pokemon) {
-        const card = document.createElement("div");
-        card.classList.add("pokemon-card");
+                    // Flip Card on Click
+                    card.addEventListener("click", () => {
+                        card.classList.toggle("flipped");
+                    });
 
-        card.innerHTML = `
-            <div class="card-inner">
-                <div class="card-front">
-                    <h3>#${pokemon.id}</h3>
-                    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
-                    <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
-                    <p>${pokemon.types.map(type => type.type.name).join(", ")}</p>
-                </div>
-                <div class="card-back">
-                    <h3>Abilities</h3>
-                    <ul>
-                        ${pokemon.abilities.map(ability => `<li>${ability.ability.name}</li>`).join("")}
-                    </ul>
-                </div>
-            </div>
-        `;
-
-        card.addEventListener("click", () => {
-            card.classList.toggle("flipped");
+                    pokemonContainer.appendChild(card);
+                });
         });
-
-        pokemonContainer.appendChild(card);
-    }
-
-    fetchPokemon();
-});
+    })
+    .catch(error => console.error("API Fetch Error:", error));
